@@ -97,6 +97,9 @@ if ($InstallChocolatey) {
 else {
     Write-Host "Not Installing Chocolatey."
 }
+
+RefreshEnv
+Start-Sleep -Seconds 15
 Write-Host
 
 #########################################################################

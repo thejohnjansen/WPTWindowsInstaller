@@ -5,11 +5,8 @@ A powershell script for getting a machine ready to run Web Platform Tests from t
 ## Instructions
 
 Copy the .ps1 to your desktop
-
 Launch a PowerShell window as an Admin
-
 Set the exection policy so you can run the script (Set-ExecutionPolicy -ExecutionPolicy Unrestricted)
-
 Run the WindowsInstallScript
 
 ## Test Repo and Test Harness information

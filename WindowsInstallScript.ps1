@@ -14,8 +14,9 @@ $systemDrive = $env:SystemDrive.ToLower()
 $pythonTarget = "$systemDrive\python27"
 $toolsTarget = "$systemDrive\tools"
 $driverTarget = "$systemDrive\drivers"
+$gitTarget = $env:ProgramFiles.ToLower()
 $documentsFolder = [Environment]::GetFolderPath("MyDocuments").ToLower()
-$gitTarget = "$documentsFolder\github\web-platform-tests"
+$repoTarget = "$documentsFolder\github\web-platform-tests"
 $buildType = "insiders"
 
 #########################################################################
@@ -62,6 +63,11 @@ if ($SetPathVar) {
         $newPaths += "$pythonTarget\scripts;"        
     }
 
+    if (!($pathString.Contains("$gitTarget"))) {
+        Write-Host "Adding Git to the path"
+        $newPaths += "$gitTarget\git\cmd;"
+    }
+
     if (!($pathString.Contains("$driverTarget"))) {
         Write-Host "Adding Drivers to the path"
         $newPaths += "$driverTarget;"
@@ -83,7 +89,11 @@ if ($SetPathVar) {
 else {
     Write-Host "Not setting the Path"
 }
-Write-Host
+
+RefreshEnv
+Start-Sleep -Seconds 15
+
+Write-HostWrite-Host
 
 #########################################################################
 # Install Chocolatey
@@ -97,9 +107,6 @@ if ($InstallChocolatey) {
 else {
     Write-Host "Not Installing Chocolatey."
 }
-
-RefreshEnv
-Start-Sleep -Seconds 15
 Write-Host
 
 #########################################################################
@@ -163,7 +170,7 @@ Write-Host
 #########################################################################
 if ($InstallTestRepo) {
     Write-Host "Getting the test repo"
-    git clone "https://github.com/w3c/web-platform-tests.git" $gitTarget
+    git clone "https://github.com/w3c/web-platform-tests.git" $repoTarget
     Write-Host "Test Repo Installed"
 }
 else {
@@ -254,8 +261,16 @@ else {
     Write-Host "Not installing Ahem"
 }
 
-Write-Host "END"
-
-#[Console]::Beep(750,700)
-#[Console]::Beep(1000,700)
-#[Console]::Beep(1500,700)
+#########################################################################
+# Kick off a run of the tests so that the manifest is created
+#########################################################################
+if ($RunTests) {
+    Write-Host "Running a simple test to make sure it worked."
+    "$repoTarget\python wpt run edge dom/events/CustomEvent.html"
+}
+else {
+    Write-Host "Not Running any tests. To run tests nav to the WPT repo"
+    Write-Host "python wpt run edge "
+}
+Write-Host
+Write-Host "Done."

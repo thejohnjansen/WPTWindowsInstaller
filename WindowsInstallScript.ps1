@@ -224,15 +224,15 @@ if ($InstallHosts) {
 
 # if the file already contains web-platform.test, don't do anything
     If(!($containsWord -contains $true)) {
-        $newString += @"
-127.0.0.1   web-platform.test`n
-127.0.0.1   www.web-platform.test`n
-127.0.0.1   www1.web-platform.test`n
-127.0.0.1   www2.web-platform.test`n
-127.0.0.1   xn--n8j6ds53lwwkrqhv28a.web-platform.test`n
-127.0.0.1   xn--lve-6lad.web-platform.test`n
-0.0.0.0     nonexistent-origin.web-platform.test`n
-"@
+        $newString = New-Object -TypeName "System.Text.StringBuilder";
+
+        $newString.AppendLine("127.0.0.1   web-platform.test")
+        $newString.AppendLine("127.0.0.1   www1.web-platform.test")
+        $newString.AppendLine("127.0.0.1   www2.web-platform.test")
+        $newString.AppendLine("127.0.0.1   xn--n8j6ds53lwwkrqhv28a.web-platform.test")
+        $newString.AppendLine("127.0.0.1   xn--lve-6lad.web-platform.test")
+        $newString.AppendLine("0.0.0.0   nonexistent-origin.web-platform.test")
+
     Add-Content $hostsLocation $newString
     Write-Host "HOSTS file modified"
     }

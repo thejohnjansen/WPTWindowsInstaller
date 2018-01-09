@@ -86,13 +86,13 @@ if ($SetPathVar) {
     else {
         Write-Host "Looks like all PATH variables were already set. Not setting them."
     }
+
+    RefreshEnv
+    Start-Sleep -Seconds 15
 }
 else {
     Write-Host "Not setting the Path"
 }
-
-RefreshEnv
-Start-Sleep -Seconds 15
 Write-Host
 
 #########################################################################
@@ -266,7 +266,8 @@ else {
 #########################################################################
 if ($RunTests) {
     Write-Host "Running a simple test to make sure it worked."
-    "$repoTarget\python wpt run edge dom/events/CustomEvent.html"
+    Set-Location -Path $repoTarget
+    python wpt run edge dom/events/CustomEvent.html
 }
 else {
     Write-Host "Not Running any tests. To run tests nav to the WPT repo"

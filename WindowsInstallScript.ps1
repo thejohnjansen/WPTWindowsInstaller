@@ -33,6 +33,7 @@ $InstallDrivers = $true
 $SetPathVar = $true
 $InstallHosts = $true
 $InstallAhem = $true
+$RunTests = $true
 
 #########################################################################
 # Create the directories as needed

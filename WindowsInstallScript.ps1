@@ -82,13 +82,13 @@ if ($SetPathVar) {
     if ($newPaths) {
         [Environment]::SetEnvironmentVariable("Path", "$newPaths" + "$Env:Path", "Machine")
         Write-Host "Path variable set"
+        
+        RefreshEnv
+        Start-Sleep -Seconds 15
     }
     else {
         Write-Host "Looks like all PATH variables were already set. Not setting them."
     }
-
-    RefreshEnv
-    Start-Sleep -Seconds 15
 }
 else {
     Write-Host "Not setting the Path"

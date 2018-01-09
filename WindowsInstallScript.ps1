@@ -92,8 +92,7 @@ else {
 
 RefreshEnv
 Start-Sleep -Seconds 15
-
-Write-HostWrite-Host
+Write-Host
 
 #########################################################################
 # Install Chocolatey

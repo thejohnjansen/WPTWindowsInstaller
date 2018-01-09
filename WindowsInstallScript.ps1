@@ -3,7 +3,7 @@
 #########################################################################
 Write-Host
 Write-Host "Setting Execution Policy to install from SSL"
-Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Write-Host
 
@@ -225,13 +225,13 @@ if ($InstallHosts) {
 # if the file already contains web-platform.test, don't do anything
     If(!($containsWord -contains $true)) {
         $newString += @"
-127.0.0.1   web-platform.test
-127.0.0.1   www.web-platform.test
-127.0.0.1   www1.web-platform.test
-127.0.0.1   www2.web-platform.test
-127.0.0.1   xn--n8j6ds53lwwkrqhv28a.web-platform.test
-127.0.0.1   xn--lve-6lad.web-platform.test
-0.0.0.0     nonexistent-origin.web-platform.test
+127.0.0.1   web-platform.test`n
+127.0.0.1   www.web-platform.test`n
+127.0.0.1   www1.web-platform.test`n
+127.0.0.1   www2.web-platform.test`n
+127.0.0.1   xn--n8j6ds53lwwkrqhv28a.web-platform.test`n
+127.0.0.1   xn--lve-6lad.web-platform.test`n
+0.0.0.0     nonexistent-origin.web-platform.test`n
 "@
     Add-Content $hostsLocation $newString
     Write-Host "HOSTS file modified"

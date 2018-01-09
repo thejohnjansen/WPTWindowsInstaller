@@ -3,7 +3,7 @@
 #########################################################################
 Write-Host
 Write-Host "Setting Execution Policy to install from SSL"
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Write-Host
 

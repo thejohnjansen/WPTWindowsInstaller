@@ -231,7 +231,7 @@ if ($InstallHosts) {
         $newString.AppendLine("127.0.0.1   www2.web-platform.test")
         $newString.AppendLine("127.0.0.1   xn--n8j6ds53lwwkrqhv28a.web-platform.test")
         $newString.AppendLine("127.0.0.1   xn--lve-6lad.web-platform.test")
-        $newString.AppendLine("0.0.0.0   nonexistent-origin.web-platform.test")
+        $newString.AppendLine("0.0.0.0     nonexistent-origin.web-platform.test")
 
     Add-Content $hostsLocation $newString
     Write-Host "HOSTS file modified"

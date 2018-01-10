@@ -276,7 +276,7 @@ if ($RunTests) {
 }
 else {
     Write-Host "Not Running any tests. To run tests nav to the WPT repo"
-    Write-Host "python wpt run edge "
+    Write-Host "python wpt run edge"
 }
 Write-Host
 Write-Host "Done."

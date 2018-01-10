@@ -98,15 +98,13 @@ Write-Host
 Write-Host "Setting regkey to disable popup blocker for web-platform.test"
 $registryPath = "HKCU:Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\New Windows\Allow"
 $Name = "*.web-platform.test"
-$Value = New-ItemProperty -Path $registryPath -Name $Name -PropertyType Binary -Value ([byte[]](0x00,0x00)) -Force | Out-Null
 
 if(!(Test-Path $registryPath)) {
     New-Item -Path $registryPath -Force | Out-Null
-    $Value
-  }
-else {
-    $Value
 }
+
+New-ItemProperty -Path $registryPath -Name $Name -PropertyType Binary -Value ([byte[]](0x00,0x00)) -Force | Out-Null
+
 Write-Host "Registry set"
 Write-Host
 

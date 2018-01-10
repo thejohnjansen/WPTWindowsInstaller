@@ -287,6 +287,7 @@ else {
 #########################################################################
 if ($RunTests) {
     Write-Host "Running a simple test to make sure it worked."
+    Write-Host "Doing so will take a long time, go get some coffee."
     Set-Location -Path $repoTarget
     python wpt run edge dom/events/CustomEvent.html
 }

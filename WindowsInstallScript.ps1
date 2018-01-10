@@ -129,6 +129,9 @@ if ($InstallGit) {
     Write-Host "Installing git"
     cinst git -y
     Write-Host "Git Installed"
+    # refresh here will fail if chocolately is not install
+    # that just means you have to exit and 
+    # relaunch the PS session manually
     RefreshEnv
 }
 else {

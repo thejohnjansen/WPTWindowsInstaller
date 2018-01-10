@@ -114,7 +114,7 @@ Write-Host
 #########################################################################
 if ($InstallPython) {
     Write-Host "Installing python"
-    cinst python2 -y -o -ia "'/qn /norestart ALLUSERS=1 RefTARGETDIR=$pythonTarget'"
+    cinst python2 -y -o -ia "'/qn /norestart ALLUSERS=1 TARGETDIR=$pythonTarget'"
     Write-Host "Python Installed"
 }
 else {

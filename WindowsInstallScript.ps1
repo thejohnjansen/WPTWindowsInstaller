@@ -129,6 +129,7 @@ if ($InstallGit) {
     Write-Host "Installing git"
     cinst git -y
     Write-Host "Git Installed"
+    RefreshEnv
 }
 else {
     Write-Host "Not installing git"

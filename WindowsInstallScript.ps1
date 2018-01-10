@@ -82,9 +82,6 @@ if ($SetPathVar) {
     if ($newPaths) {
         [Environment]::SetEnvironmentVariable("Path", "$newPaths" + "$Env:Path", "Machine")
         Write-Host "Path variable set"
-        
-        RefreshEnv
-        Start-Sleep -Seconds 15
     }
     else {
         Write-Host "Looks like all PATH variables were already set. Not setting them."
@@ -107,6 +104,9 @@ if ($InstallChocolatey) {
 else {
     Write-Host "Not Installing Chocolatey."
 }
+# if you do not have chocolatey installed, this will fail;
+# that just means you have to exit and relaunch the PS session manually
+RefreshEnv
 Write-Host
 
 #########################################################################
@@ -114,7 +114,7 @@ Write-Host
 #########################################################################
 if ($InstallPython) {
     Write-Host "Installing python"
-    cinst python2 -y -o -ia "'/qn /norestart ALLUSERS=1 TARGETDIR=$pythonTarget'"
+    cinst python2 -y -o -ia "'/qn /norestart ALLUSERS=1 RefTARGETDIR=$pythonTarget'"
     Write-Host "Python Installed"
 }
 else {
@@ -226,12 +226,13 @@ if ($InstallHosts) {
     If(!($containsWord -contains $true)) {
         $newString = New-Object -TypeName "System.Text.StringBuilder";
 
-        $newString.AppendLine("127.0.0.1   web-platform.test")
-        $newString.AppendLine("127.0.0.1   www1.web-platform.test")
-        $newString.AppendLine("127.0.0.1   www2.web-platform.test")
-        $newString.AppendLine("127.0.0.1   xn--n8j6ds53lwwkrqhv28a.web-platform.test")
-        $newString.AppendLine("127.0.0.1   xn--lve-6lad.web-platform.test")
-        $newString.AppendLine("0.0.0.0     nonexistent-origin.web-platform.test")
+        $newString.AppendLine("127.0.0.1`tweb-platform.test")
+        $newString.AppendLine("127.0.0.1`twww.web-platform.test")
+        $newString.AppendLine("127.0.0.1`twww1.web-platform.test")
+        $newString.AppendLine("127.0.0.1`twww2.web-platform.test")
+        $newString.AppendLine("127.0.0.1`txn--n8j6ds53lwwkrqhv28a.web-platform.test")
+        $newString.AppendLine("127.0.0.1`txn--lve-6lad.web-platform.test")
+        $newString.AppendLine("0.0.0.0`t`tnonexistent-origin.web-platform.test")
 
     Add-Content $hostsLocation $newString
     Write-Host "HOSTS file modified"

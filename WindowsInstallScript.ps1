@@ -99,11 +99,11 @@ Write-Host "Setting regkey to disable popup blocker for web-platform.test"
 $registryPath = "HKCU:Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\New Windows\Allow"
 $Name = "*.web-platform.test"
 
-if(!(Test-Path $registryPath)) {
+if (!(Test-Path $registryPath)) {
     New-Item -Path $registryPath -Force | Out-Null
 }
 
-New-ItemProperty -Path $registryPath -Name $Name -PropertyType Binary -Value ([byte[]](0x00,0x00)) -Force | Out-Null
+New-ItemProperty -Path $registryPath -Name $Name -PropertyType Binary -Value ([byte[]](0x00, 0x00)) -Force | Out-Null
 
 Write-Host "Registry set"
 Write-Host
@@ -114,7 +114,7 @@ Write-Host
 if ($InstallChocolatey) {
     Write-Host "Installing Chocolatey..."
     Invoke-Expression ((new-object net.webclient).DownloadString(
-        'https://chocolatey.org/install.ps1'))
+            'https://chocolatey.org/install.ps1'))
     Write-Host "Chocolately Installed"
 }
 else {
@@ -162,7 +162,7 @@ if ($InstallPip) {
     Write-Host "Installing Pip"
     $pipDest = "$pythonTarget\get-pip.py"
 
-    (new-object net.webclient).DownloadFile('https://bootstrap.pypa.io/get-pip.py',$pipDest)
+    (new-object net.webclient).DownloadFile('https://bootstrap.pypa.io/get-pip.py', $pipDest)
     python $pythonTarget\get-pip.py
     Write-Host "Pip Installed"
 }
@@ -210,7 +210,7 @@ if ($InstallDrivers) {
 
     $zipPackage = (new-object -com shell.application).Namespace("$toolsTarget\chromedriver.zip")
     $destinationFolder = (new-object -com shell.application).Namespace($driverTarget)
-    $destinationFolder.CopyHere($zipPackage.Items(),0x14)
+    $destinationFolder.CopyHere($zipPackage.Items(), 0x14)
     Write-Host "ChromeDriver Installed"
 
     # MicrosoftWebDriver
@@ -223,7 +223,7 @@ if ($InstallDrivers) {
     $url = "https://download.microsoft.com/download/$mwdVersion/MicrosoftWebDriver.exe"
     $dest = "$driverTarget\MicrosoftWebDriver.exe"
 
-    (new-object net.webclient).DownloadFile($url,$dest)
+    (new-object net.webclient).DownloadFile($url, $dest)
     Write-Host "MicrosoftWebDriver Installed"
 }
 else {
@@ -236,14 +236,14 @@ Write-Host
 #########################################################################
 if ($InstallHosts) {
     Write-Host "Setting the HOSTS file"
-    $wordToFind="web-platform.test"
+    $wordToFind = "web-platform.test"
     $hostsLocation = "$env:SystemRoot\System32\drivers\etc\hosts"
 
     $file = Get-Content $hostsLocation
-    $containsWord = $file | %{$_ -match $wordToFind}
+    $containsWord = $file | % {$_ -match $wordToFind}
 
-# if the file already contains web-platform.test, don't do anything
-    If(!($containsWord -contains $true)) {
+    # if the file already contains web-platform.test, don't do anything
+    If (!($containsWord -contains $true)) {
         $newString = New-Object -TypeName "System.Text.StringBuilder";
 
         $newString.AppendLine("127.0.0.1`tweb-platform.test")
@@ -254,8 +254,8 @@ if ($InstallHosts) {
         $newString.AppendLine("127.0.0.1`txn--lve-6lad.web-platform.test")
         $newString.AppendLine("0.0.0.0`t`tnonexistent-origin.web-platform.test")
 
-    Add-Content $hostsLocation $newString
-    Write-Host "HOSTS file modified"
+        Add-Content $hostsLocation $newString
+        Write-Host "HOSTS file modified"
     }
 }
 else {
@@ -268,12 +268,11 @@ Write-Host
 #########################################################################
 if ($InstallAhem) {
     Write-Host "Installing Ahem"
-    $FONTS = 0x14
-    $objShell = New-Object -ComObject Shell.Application
-    $objFolder = $objShell.Namespace($FONTS)
-    (new-object net.webclient).DownloadFile('https://github.com/w3c/web-platform-tests/raw/master/fonts/Ahem.ttf','c:\tools\ahem.ttf')
-
     if (!(Test-Path "$systemDrive\windows\fonts\ahem_0.ttf")) {
+        $FONTS = 0x14
+        $objShell = New-Object -ComObject Shell.Application
+        $objFolder = $objShell.Namespace($FONTS)
+        (new-object net.webclient).DownloadFile('https://github.com/w3c/web-platform-tests/raw/master/fonts/Ahem.ttf', 'c:\tools\ahem.ttf')
         $objFolder.CopyHere("$toolsTarget\ahem.ttf", 0x10)
     }
     Write-Host "Ahem Installed"

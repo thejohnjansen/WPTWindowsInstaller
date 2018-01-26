@@ -95,7 +95,10 @@ Write-Host
 # These tests use a popup, so disable edge popup blocker
 #########################################################################
 Write-Host "Setting regkey to disable popup blocker for web-platform.test"
-$registryPath = "HKCU:Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\New Windows\Allow"
+$registryPath = "HKCU:Software\Classes\Local Settings\Software\Microsoft" +
+"\Windows\CurrentVersion\AppContainer\Storage\" +
+"microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\New Windows\Allow"
+
 $Name = "*.web-platform.test"
 
 if (!(Test-Path $registryPath)) {
@@ -281,11 +284,16 @@ Write-Host
 #########################################################################
 if ($InstallAhem) {
     Write-Host "Installing Ahem"
-    if (!(Test-Path "$systemDrive\windows\fonts\ahem_0.ttf")) {
+    $alreadyInstalled = (Test-Path "$systemDrive\windows\fonts\ahem.ttf") -or 
+    (Test-Path "$systemDrive\windows\fonts\ahem_0.ttf")
+
+    if (!($alreadyInstalled)) {
         $FONTS = 0x14
         $objShell = New-Object -ComObject Shell.Application
         $objFolder = $objShell.Namespace($FONTS)
-        (new-object net.webclient).DownloadFile('https://github.com/w3c/web-platform-tests/raw/master/fonts/Ahem.ttf', 'c:\tools\ahem.ttf')
+        (new-object net.webclient).DownloadFile(
+            "https://github.com/w3c/web-platform-tests/raw/master/fonts/Ahem.ttf", 
+            "$toolsTarget\ahem.ttf")
         $objFolder.CopyHere("$toolsTarget\ahem.ttf", 0x10)
     }
     Write-Host "Ahem Installed"
@@ -293,6 +301,7 @@ if ($InstallAhem) {
 else {
     Write-Host "Not installing Ahem"
 }
+Write-Host
 
 #########################################################################
 # Kick off a run of the tests so that the manifest is created

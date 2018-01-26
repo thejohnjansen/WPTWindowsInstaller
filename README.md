@@ -10,13 +10,12 @@ fail gracefully. However, you can also modify the variables near the top
 of the file to be $false for any component you already have.
 
 Simply download the repo as a zip, extract it to some directory then:
-- Copy the .ps1 to your desktop
 - Launch a PowerShell window as an Admin
 - Set the exection policy so you can run the script:
 ``` powershell
  Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 ```
-- Run the WindowsInstallScript
+- Run the WindowsInstallScript from the extraction directory
 
 ## Test Repo and Test Harness information ##
 

@@ -21,7 +21,6 @@ Since this is just about getting the machine setup, it
 would do you good to check out the instructions for
 after you are successful.
 
-In the readme:
-[WPT Test Suite] (https://github.com/w3c/web-platform-tests)
+In the [WPT Test Suite] (https://github.com/w3c/web-platform-tests) readme.md
 you can see how to run via 
 "python wpt run"

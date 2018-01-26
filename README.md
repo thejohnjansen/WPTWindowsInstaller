@@ -10,7 +10,9 @@ then:
 Copy the .ps1 to your desktop
 Launch a PowerShell window as an Admin
 Set the exection policy so you can run the script:
+``` powershell
  Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
+```
 Run the WindowsInstallScript
 
 ## Test Repo and Test Harness information ##

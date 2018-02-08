@@ -105,8 +105,7 @@ if (!(Test-Path $registryPath)) {
     New-Item -Path $registryPath -Force | Out-Null
 }
 
-New-ItemProperty -Path $registryPath -Name $Name -PropertyType Binary 
--Value ([byte[]](0x00, 0x00)) -Force | Out-Null
+New-ItemProperty -Path $registryPath -Name $Name -PropertyType Binary -Value ([byte[]](0x00, 0x00)) -Force | Out-Null
 
 Write-Host "Registry set"
 Write-Host

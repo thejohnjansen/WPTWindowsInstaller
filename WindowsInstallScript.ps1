@@ -107,6 +107,13 @@ if (!(Test-Path $registryPath)) {
 
 New-ItemProperty -Path $registryPath -Name $Name -PropertyType Binary -Value ([byte[]](0x00, 0x00)) -Force | Out-Null
 
+$Name = "*.w3c-test.org"
+
+    New-Item -Path $registryPath -Force | Out-Null
+}
+
+New-ItemProperty -Path $registryPath -Name $Name -PropertyType Binary -Value ([byte[]](0x00, 0x00)) -Force | Out-Null
+
 Write-Host "Registry set"
 Write-Host
 
@@ -216,6 +223,16 @@ if ($InstallDrivers) {
     Write-Host "ChromeDriver Installed"
 
     # MicrosoftWebDriver
+
+    # make sure webdriver is not already in the drivers folder
+    $alreadyInstalled = (Test-Path "$driverTarget\MicrosoftWebDriver.exe")
+
+    if ($alreadyInstalled) {
+        Write-Host "WebDriver is already in the $driverTarget directory. Not installing."
+    }
+    else {
+
+
     $regKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
     $buildType = (Get-ItemProperty $regKey).ProductName
     $buildNumber = (Get-ItemProperty $regKey).CurrentBuildNumber
@@ -240,6 +257,7 @@ if ($InstallDrivers) {
     $dest = "$driverTarget\MicrosoftWebDriver.exe"
 
     (new-object net.webclient).DownloadFile($url, $dest)
+}
     Write-Host "MicrosoftWebDriver Installed"
 }
 else {
@@ -260,17 +278,7 @@ if ($InstallHosts) {
 
     # if the file already contains web-platform.test, don't do anything
     If (!($containsWord -contains $true)) {
-        $newString = New-Object -TypeName "System.Text.StringBuilder";
-
-        $newString.AppendLine("127.0.0.1`tweb-platform.test")
-        $newString.AppendLine("127.0.0.1`twww.web-platform.test")
-        $newString.AppendLine("127.0.0.1`twww1.web-platform.test")
-        $newString.AppendLine("127.0.0.1`twww2.web-platform.test")
-        $newString.AppendLine("127.0.0.1`txn--n8j6ds53lwwkrqhv28a.web-platform.test")
-        $newString.AppendLine("127.0.0.1`txn--lve-6lad.web-platform.test")
-        $newString.AppendLine("0.0.0.0`t`tnonexistent-origin.web-platform.test")
-
-        Add-Content $hostsLocation $newString
+        python wpt make-hosts-file >> C:\Windows\System32\drivers\etc\hosts
         Write-Host "HOSTS file modified"
     }
 }

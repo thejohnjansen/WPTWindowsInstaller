@@ -226,39 +226,41 @@ if ($InstallDrivers) {
     # MicrosoftWebDriver
 
     # make sure webdriver is not already in the drivers folder
-    $alreadyInstalled = (Test-Path "$driverTarget\MicrosoftWebDriver.exe")
+    $dest = "$driverTarget\MicrosoftWebDriver.exe"
+    $alreadyInstalled = (Test-Path $dest)
 
     if ($alreadyInstalled) {
         Write-Host "WebDriver is already in the $driverTarget directory. Not installing."
     }
     else {
+        $regKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+        $buildType = (Get-ItemProperty $regKey).ProductName
+        $buildNumber = (Get-ItemProperty $regKey).CurrentBuildNumber
+        
+        if ($buildNumber -gt 17134) {
+            # use a fod
+            DISM.exe /Online /Add-Capability /CapabilityName:Microsoft.WebDriver~~~~0.0.1.0
+        }
+        else {
+            # Set the version to be Current RTM version
+            $mwdVersion = "F/8/A/F8AF50AB-3C3A-4BC4-8773-DC27B32988DD"
 
+            switch ($buildNumber) {
+                17134 { $wmdVersion = "F/8/A/F8AF50AB-3C3A-4BC4-8773-DC27B32988DD" }
+                16299 { $wmdVersion = "D/4/1/D417998A-58EE-4EFE-A7CC-39EF9E020768" }
+                15063 { $wmdVersion = "3/4/2/342316D7-EBE0-4F10-ABA2-AE8E0CDF36DD" }
+                14393 { $wmdVersion = "3/2/D/32D3E464-F2EF-490F-841B-05D53C848D15" }
+                10586 { $wmdVersion = "C/0/7/C07EBF21-5305-4EC8-83B1-A6FCC8F93F45" }
+                10240 { $wmdVersion = "8/D/0/8D0D08CF-790D-4586-B726-C6469A9ED49C" }
+                default {}
+            }
 
-    $regKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
-    $buildType = (Get-ItemProperty $regKey).ProductName
-    $buildNumber = (Get-ItemProperty $regKey).CurrentBuildNumber
-    
-    # Set the version to be Current RTM version
-    $mwdVersion = "D/4/1/D417998A-58EE-4EFE-A7CC-39EF9E020768"
+            $url = "https://download.microsoft.com/download/$mwdVersion/MicrosoftWebDriver.exe"
 
-    if ($buildType.contains("Insider Preview")) {
-        $mwdVersion = "1/4/1/14156DA0-D40F-460A-B14D-1B264CA081A5"
-    }
-    else {
-        switch ($buildNumber) {
-            16299 { $wmdVersion = "D/4/1/D417998A-58EE-4EFE-A7CC-39EF9E020768" }
-            15063 { $wmdVersion = "3/4/2/342316D7-EBE0-4F10-ABA2-AE8E0CDF36DD" }
-            14393 { $wmdVersion = "3/2/D/32D3E464-F2EF-490F-841B-05D53C848D15" }
-            10586 { $wmdVersion = "C/0/7/C07EBF21-5305-4EC8-83B1-A6FCC8F93F45" }
-            10240 { $wmdVersion = "8/D/0/8D0D08CF-790D-4586-B726-C6469A9ED49C" }
+            (new-object net.webclient).DownloadFile($url, $dest)
         }
     }
-
-    $url = "https://download.microsoft.com/download/$mwdVersion/MicrosoftWebDriver.exe"
-    $dest = "$driverTarget\MicrosoftWebDriver.exe"
-
-    (new-object net.webclient).DownloadFile($url, $dest)
-}
+    
     Write-Host "MicrosoftWebDriver Installed"
 }
 else {

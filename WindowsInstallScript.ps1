@@ -109,6 +109,7 @@ New-ItemProperty -Path $registryPath -Name $Name -PropertyType Binary -Value ([b
 
 $Name = "*.w3c-test.org"
 
+if (!(Test-Path $registryPath)) {
     New-Item -Path $registryPath -Force | Out-Null
 }
 

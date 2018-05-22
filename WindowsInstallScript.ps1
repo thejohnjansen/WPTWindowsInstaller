@@ -282,7 +282,7 @@ if ($InstallHosts) {
     # if the file already contains web-platform.test, don't do anything
     If (!($containsWord -contains $true)) {
         Push-Location -Path $repoTarget
-        python wpt make-hosts-file >> $hostsLocation
+        python wpt make-hosts-file | Out-File $hostsLocation -Encoding ascii -Append
         Write-Host "HOSTS file modified"
     }
 }

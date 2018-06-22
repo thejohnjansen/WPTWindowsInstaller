@@ -16,7 +16,7 @@ $toolsTarget = "$systemDrive\tools"
 $driverTarget = "$systemDrive\drivers"
 $gitTarget = $env:ProgramFiles.ToLower()
 $documentsFolder = [Environment]::GetFolderPath("MyDocuments").ToLower()
-$repoTarget = "$documentsFolder\github\web-platform-tests"
+$repoTarget = "$documentsFolder\github\wpt"
 
 #########################################################################
 # Install Choices - You can turn some of these off 
@@ -200,7 +200,7 @@ Write-Host
 #########################################################################
 if ($InstallTestRepo) {
     Write-Host "Getting the test repo"
-    git clone "https://github.com/w3c/web-platform-tests.git" $repoTarget
+    git clone "https://github.com/web-platform-tests/wpt.git" $repoTarget
     Write-Host "Test Repo Installed"
 }
 else {
